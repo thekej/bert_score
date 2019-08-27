@@ -123,6 +123,7 @@ def greedy_cos_idf(ref_embedding, ref_lens, ref_masks, ref_idf,
     ref_idf.div_(ref_idf.sum(dim=1, keepdim=True))
     precision_scale = hyp_idf.to(word_precision.device)
     recall_scale = ref_idf.to(word_recall.device)
+    recall_scale[torch.isnan(recall_scale)] = 1e-8
     P = (word_precision * precision_scale).sum(dim=1)
     R = (word_recall * recall_scale).sum(dim=1)
     
