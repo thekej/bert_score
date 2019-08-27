@@ -47,14 +47,14 @@ def score(cands, refs, bert="bert-base-multilingual-cased",
     else:
         if verbose:
             print('preparing IDF dict...')
-        start = time.perf_counter()
+        start = time.time()
         idf_dict = get_idf_dict(refs, tokenizer)
         if verbose:
-            print('done in {:.2f} seconds'.format(time.perf_counter() - start))
+            print('done in {:.2f} seconds'.format(time.time() - start))
 
     if verbose:
         print('calculating scores...')
-    start = time.perf_counter()
+    start = time.time()
     all_preds = bert_cos_score_idf(model, refs, cands, tokenizer, idf_dict,
                                    verbose=verbose, device=device, batch_size=batch_size)
 
@@ -62,7 +62,7 @@ def score(cands, refs, bert="bert-base-multilingual-cased",
     R = all_preds[:, 1].cpu()
     F1 = all_preds[:, 2].cpu()
     if verbose:
-        print('done in {:.2f} seconds'.format(time.perf_counter() - start))
+        print('done in {:.2f} seconds'.format(time.time() - start))
 
     return P, R, F1
 
